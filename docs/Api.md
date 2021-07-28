@@ -208,3 +208,121 @@ Post
 }
 ```
 
+## 组队模块
+
+### 1.获取页面信息
+**请求URL：**
+
+```
+/team/recommend（或play/make-team/share-bill）
+```
+
+**请求方式：**
+
+```
+Get
+```
+
+
+**返回示例：**
+
+```js
+{
+  "status": 200,
+  "msg": "Get 'recommends' successfully!",
+  "recommends": [
+    {
+      "_id": "6100c5f475d5e4bd55e9210d",
+      "need": "做社会实践！",
+      "tag": "鬼屋",
+      "perNum": "6/10",
+      "date": "2021-07-28",
+      "sort": "组队",
+      "group": "772523546",
+      "tokenId": "6100b4451100284f7914e390",
+      "__v": 0
+    },
+    {
+      "_id": "6100c67e75d5e4bd55e9211c",
+      "need": "吃吃喝喝！",
+      "tag": "吃",
+      "perNum": "6/10",
+      "date": "2021-07-28",
+      "sort": "约饭",
+      "group": "772523546",
+      "tokenId": "6100c566d5af88b911100dbb",
+      "__v": 0
+    },
+  ]
+}
+```
+
+### 2.获取我的信息
+
+**请求URL：**
+
+```
+/team/my
+```
+
+**请求方式：**
+
+```
+Get
+```
+
+**请求头信息**
+
+请求头中附带token，如：
+
+```http
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDBjNTY2ZDVhZjg4YjkxMTEwMGRiYiIsImlhdCI6MTYyNzQ0MDk3NiwiZXhwIjoxNjI4MDQ1Nzc2fQ.Oyaf5vJ_aUuS8YAN3QxiuMbHXw06QGFa7IY8DboLMEc
+```
+
+**返回示例：**
+
+同上
+
+### 3.发起组队需求
+
+## 社区模块
+
+
+
+## 个人中心
+
+**请求URL：**
+
+```
+/profile
+```
+
+**请求方式：**
+
+```
+Get
+```
+
+**请求头信息**
+
+请求头中附带token，如：
+
+```http
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDBjNTY2ZDVhZjg4YjkxMTEwMGRiYiIsImlhdCI6MTYyNzQ0MDk3NiwiZXhwIjoxNjI4MDQ1Nzc2fQ.Oyaf5vJ_aUuS8YAN3QxiuMbHXw06QGFa7IY8DboLMEc
+```
+
+**返回示例：**
+
+```js
+{
+  "status": 200,
+  "user": {
+    "focus": 0,
+    "fans": 0,
+    "_id": "6100b4451100284f7914e390",
+    "userAccount": "772523546",
+    "password": "$2b$10$Djv.YsD6/miXX6rgCTXfjOTyQVzaSRb3YBIMvqtFZCam4uWNzbOTS",
+    "__v": 0
+  }
+}
+```
