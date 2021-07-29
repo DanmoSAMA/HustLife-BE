@@ -2,9 +2,8 @@
 node_modules
 upload
 upload-test
-/dist
 test.http
-test.js
+mail-test.js
 
 # local env files
 .env.local

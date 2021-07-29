@@ -4,9 +4,13 @@ const {
   applyModel,
   postModel,
   commentModel,
+  collectModel,
+  subcommentModel,
+  followModel,
+  searchModel,
 } = require("./model");
 
-const path = require("path");
+// const path = require("path");
 const Koa = require("koa");
 const router = require("koa-router")();
 const Cors = require("koa-cors");
@@ -15,7 +19,7 @@ const bodyParser = require("koa-bodyparser");
 const nodemailer = require("nodemailer");
 const smtpTransport = require("nodemailer-smtp-transport");
 const jwt = require("jsonwebtoken");
-const formidable = require("formidable");
+// const formidable = require("formidable");
 const app = new Koa();
 
 const SECRET = "qfuhsnbvkjahowjrhfn";
@@ -223,7 +227,6 @@ router
   })
 
   // 组队模块
-  // 添加组队需求
   .get("/team/recommend", async (ctx, next) => {
     const recommends = await teamModel.aggregate([{ $sample: { size: 10 } }]);
     ctx.body = {
@@ -278,6 +281,7 @@ router
       my,
     };
   })
+  // 添加组队需求
   .post("/team/add", async (ctx, next) => {
     let body = ctx.request.body;
     const raw = String(ctx.header.authorization).split(" ").pop();
@@ -321,6 +325,18 @@ router
       team,
     };
   })
+  // 结束需求
+  .post("/team/end", async (ctx, next) => {
+    let body = ctx.request.body;
+    const team = await teamModel.deleteOne({
+      _id: body._id,
+    });
+    ctx.body = {
+      status: 200,
+      msg: "Delete successfully!",
+      team,
+    };
+  })
   // 提交申请
   .post("/team/apply", async (ctx, next) => {
     // 通信怎么办?
@@ -343,7 +359,10 @@ router
   // 社区首页/话题页
   .get("/community", async (ctx, next) => {
     if (!ctx.query.tag) {
-      const posts = await postModel.aggregate([{ $sample: { size: 10 } }]);
+      const posts = await postModel.aggregate([
+        { $match: { isPublic: true } },
+        { $sample: { size: 10 } },
+      ]);
       ctx.body = {
         status: 200,
         msg: "Get posts successfully!",
@@ -351,7 +370,7 @@ router
       };
     } else {
       const posts = await postModel.aggregate([
-        { $match: { tag: ctx.query.tag } },
+        { $match: { tag: ctx.query.tag, isPublic: true } },
         { $sample: { size: 10 } },
       ]);
       ctx.body = {
@@ -361,7 +380,7 @@ router
       };
     }
   })
-  // 发帖
+  // 发帖(保存而不发出，依然请求该接口，前端行为不一致)
   .post("/community/add", async (ctx, next) => {
     let body = ctx.request.body;
     const raw = String(ctx.header.authorization).split(" ").pop();
@@ -378,20 +397,54 @@ router
       post,
     };
   })
+  // 修改帖子内容
+  .post("/community/modify", async (ctx, next) => {
+    let body = ctx.request.body;
+    const post = await postModel.updateOne(
+      {
+        _id: body._id,
+      },
+      {
+        $set: {
+          content: body.content,
+          tag: body.tag,
+          isPublic: body.isPublic,
+          date: body.date,
+        },
+      }
+    );
+    ctx.body = {
+      status: 200,
+      msg: "The post is modified successfully!",
+      post,
+    };
+  })
   // 内容详情页面
   .get("/community/comment", async (ctx, next) => {
-    // 将评论的_id加在查询参数中
+    // 将帖子的_id加在查询参数中
     const post = await postModel.findOne({
       _id: ctx.query._id,
     });
     const comments = await commentModel.find({
       postId: ctx.query._id,
     });
+    const allSubcomments = new Array();
+    for (let i = 0; i < comments.length; i++) {
+      let subcomments = await subcommentModel.find({
+        commentId: comments[i]._id,
+      });
+      if (subcomments) {
+        for (let j = 0; j < subcomments.length; j++) {
+          allSubcomments.push(subcomments[j]);
+        }
+      }
+    }
     ctx.body = {
       status: 200,
       msg: "Get the post details!",
       post,
       comments,
+      allSubcomments,
     };
   })
   // 发评论
@@ -406,10 +459,195 @@ router
       date: body.date,
       tokenId: id,
     });
+    const post = await postModel.findOne({
+      _id: body.postId,
+    });
+    let commentNum = post.comments + 1;
+    await postModel.updateOne(
+      {
+        _id: body.postId,
+      },
+      {
+        $set: {
+          comments: commentNum,
+        },
+      }
+    );
+
     ctx.body = {
       status: 200,
       msg: "Comment successfully!",
       comment,
+    };
+  })
+  // 发子评论
+  .post("/community/subcomment/add", async (ctx, next) => {
+    let body = ctx.request.body;
+    const raw = String(ctx.header.authorization).split(" ").pop();
+    const { id } = jwt.verify(raw, SECRET);
+    const subcomment = await subcommentModel.create({
+      user: body.user,
+      content: body.content,
+      commentId: body.commentId,
+      tokenId: id,
+    });
+    ctx.body = {
+      status: 200,
+      msg: "Comment successfully!",
+      subcomment,
+    };
+  })
+  // 收藏
+  .post("/community/comment/collect", async (ctx, next) => {
+    if (!ctx.header || !ctx.header.authorization) {
+      ctx.response.status = 422;
+      ctx.body = {
+        status: 422,
+        msg: "Protected resource, use Authorization header to get access!",
+      };
+      return;
+    }
+    let body = ctx.request.body;
+    const raw = String(ctx.header.authorization).split(" ").pop();
+    const { id } = jwt.verify(raw, SECRET);
+    const collection = await collectModel.create({
+      userId: id,
+      postId: body.postId,
+    });
+    ctx.body = {
+      status: 200,
+      msg: "Add to collection successfully!",
+      collection,
+    };
+  })
+  // 取消收藏
+  .post("/community/comment/delete-collect", async (ctx, next) => {
+    if (!ctx.header || !ctx.header.authorization) {
+      ctx.response.status = 422;
+      ctx.body = {
+        status: 422,
+        msg: "Protected resource, use Authorization header to get access!",
+      };
+      return;
+    }
+    let body = ctx.request.body;
+    const raw = String(ctx.header.authorization).split(" ").pop();
+    const { id } = jwt.verify(raw, SECRET);
+    const collection = await collectModel.deleteOne({
+      userId: id,
+      postId: body.postId,
+    });
+    ctx.body = {
+      status: 200,
+      msg: "Delete collection successfully!",
+      collection,
+    };
+  })
+  // 为帖子点赞
+  .post("/community/like", async (ctx, next) => {
+    let body = ctx.request.body;
+    const oldPost = await postModel.findById(body._id);
+    let newLike = oldPost.like + 1;
+    const post = await postModel.updateOne(
+      {
+        _id: body._id,
+      },
+      {
+        $set: {
+          like: newLike,
+        },
+      }
+    );
+    ctx.body = {
+      status: 200,
+      msg: "Thumb up successfully!",
+      post,
+    };
+  })
+  // 取消点赞
+  .post("/community/delete-like", async (ctx, next) => {
+    let body = ctx.request.body;
+    const oldPost = await postModel.findById(body._id);
+    let newLike = oldPost.like - 1;
+    const post = await postModel.updateOne(
+      {
+        _id: body._id,
+      },
+      {
+        $set: {
+          like: newLike,
+        },
+      }
+    );
+    ctx.body = {
+      status: 200,
+      msg: "Cancel thumb up successfully!",
+      post,
+    };
+  })
+  // 为评论点赞
+  .post("/community/comment/like", async (ctx, next) => {
+    let body = ctx.request.body;
+    const oldComment = await commentModel.findById(body._id);
+    let newLike = oldComment.like + 1;
+    const comment = await commentModel.updateOne(
+      {
+        _id: body._id,
+      },
+      {
+        $set: {
+          like: newLike,
+        },
+      }
+    );
+    ctx.body = {
+      status: 200,
+      msg: "Thumb up successfully!",
+      comment,
+    };
+  })
+  // 取消点赞
+  .post("/community/comment/delete-like", async (ctx, next) => {
+    let body = ctx.request.body;
+    const oldComment = await commentModel.findById(body._id);
+    let newLike = oldComment.like - 1;
+    const comment = await postModel.updateOne(
+      {
+        _id: body._id,
+      },
+      {
+        $set: {
+          like: newLike,
+        },
+      }
+    );
+    ctx.body = {
+      status: 200,
+      msg: "Cancel thumb up successfully!",
+      comment,
+    };
+  })
+  // 关注他人
+  .post("/community/follow", async (ctx, next) => {
+    let body = ctx.request.body;
+    if (!ctx.header || !ctx.header.authorization) {
+      ctx.response.status = 422;
+      ctx.body = {
+        status: 422,
+        msg: "Protected resource, use Authorization header to get access!",
+      };
+      return;
+    }
+    const raw = String(ctx.header.authorization).split(" ").pop();
+    const { id } = jwt.verify(raw, SECRET);
+    const follow = await followModel.create({
+      followedId: body._id,
+      fanId: id,
+    });
+    ctx.body = {
+      status: 200,
+      msg: "Follow successfully!",
+      follow,
     };
   })
 
@@ -427,10 +665,18 @@ router
     const raw = String(ctx.header.authorization).split(" ").pop();
     const { id } = jwt.verify(raw, SECRET);
     const user = await userModel.findById(id);
-    ctx.body = {
-      status: 200,
-      user,
-    };
+    if (user) {
+      ctx.body = {
+        status: 200,
+        user,
+      };
+    } else {
+      ctx.response.status = 422;
+      ctx.body = {
+        status: 422,
+        msg: "Fail to get user information!",
+      };
+    }
   })
   // 编辑资料
   .post("/profile/edit", async (ctx, next) => {
@@ -457,7 +703,7 @@ router
     ctx.body = {
       status: 200,
       msg: "Personal information has been updated!",
-      user
+      user,
     };
   })
   // 我发布的
@@ -471,23 +717,191 @@ router
       return;
     }
     const raw = String(ctx.header.authorization).split(" ").pop();
-    const posts = postModel.find({
-      tokenId: raw
+    const { id } = jwt.verify(raw, SECRET);
+    const posts = await postModel.find({
+      tokenId: id,
     });
     ctx.body = {
       status: 200,
       msg: "Get my posts successfully!",
-      posts
-    }
+      posts,
+    };
   })
   // 我的收藏
+  .get("/profile/myCollection", async (ctx, next) => {
+    if (!ctx.header || !ctx.header.authorization) {
+      ctx.response.status = 422;
+      ctx.body = {
+        status: 422,
+        msg: "Protected resource, use Authorization header to get access!",
+      };
+      return;
+    }
+    const raw = String(ctx.header.authorization).split(" ").pop();
+    const { id } = jwt.verify(raw, SECRET);
+    const postIds = await collectModel.find({
+      userId: id,
+    });
+    let posts = new Array();
+    for (let i = 0; i < postIds.length; i++) {
+      let post = await postModel.findOne({
+        _id: postIds[i].postId,
+      });
+      posts.push(post);
+    }
+    // await Promise.all(
+    //   posts = postIds.map(async (item) => {
+    //     item = await postModel.findOne({
+    //       _id: item.postId,
+    //     });
+    //   })
+    // );
+    ctx.body = {
+      status: 200,
+      msg: "Get my collections successfully!",
+      posts,
+    };
+  })
+  // 账号设置
+  .post("/profile/settings", async (ctx, next) => {
+    let body = ctx.request.body;
+    if (!ctx.header || !ctx.header.authorization) {
+      ctx.response.status = 422;
+      ctx.body = {
+        status: 422,
+        msg: "Protected resource, use Authorization header to get access!",
+      };
+      return;
+    }
+    const raw = String(ctx.header.authorization).split(" ").pop();
+    const { id } = jwt.verify(raw, SECRET);
+    const user = await userModel.updateOne(
+      {
+        _id: id,
+      },
+      {
+        password: body.password,
+        qqNum: body.qqNum,
+        phoneNum: body.phoneNum,
+      }
+    );
+    ctx.body = {
+      status: 200,
+      msg: "Settings have been updated successfully!",
+      user,
+    };
+  })
+  // 关注页面
+  .get("/profile/focus", async (ctx, next) => {
+    if (!ctx.header || !ctx.header.authorization) {
+      ctx.response.status = 422;
+      ctx.body = {
+        status: 422,
+        msg: "Protected resource, use Authorization header to get access!",
+      };
+      return;
+    }
+    const raw = String(ctx.header.authorization).split(" ").pop();
+    const { id } = jwt.verify(raw, SECRET);
+    const followedId = await followModel.find({
+      fanId: id,
+    });
+    const followeds = new Array();
+    for (let i = 0; i < followedId.length; i++) {
+      let followed = await userModel.findOne({
+        _id: followeds[i].followedId,
+      });
+      followeds.push(followed);
+    }
+    ctx.body = {
+      status: 200,
+      msg: "Get followeds successfully!",
+      followeds,
+    };
+  })
+  // 粉丝页面
+  .get("/profile/fans", async (ctx, next) => {
+    if (!ctx.header || !ctx.header.authorization) {
+      ctx.response.status = 422;
+      ctx.body = {
+        status: 422,
+        msg: "Protected resource, use Authorization header to get access!",
+      };
+      return;
+    }
+    const raw = String(ctx.header.authorization).split(" ").pop();
+    const { id } = jwt.verify(raw, SECRET);
+    const fanIds = await followModel.find({
+      followedId: id,
+    });
+    const fans = new Array();
+    for (let i = 0; i < fanIds.length; i++) {
+      let fan = await userModel.findOne({
+        _id: fanIds[i].fanId,
+      });
+      fans.push(fan);
+    }
+    ctx.body = {
+      status: 200,
+      msg: "Get fans successfully!",
+      fans,
+    };
+  })
 
-  // 退出登录
-  // 告知前端删除localStorage中的token
+  // 搜索模块
+  // 搜索页面(待完善)
+  .get("/search", async (ctx, next) => {
+    ctx.body = {
+      status: 200,
+      msg: "Get search successfully!",
+      keyword: "王者荣耀",
+      hots: ["内卷", "躺平", "王者荣耀", "英雄联盟"],
+    };
+  })
+  // 搜索
+  .get("/search/detail", async (ctx, next) => {
+    // 把请求的内容加在url后边：内容类型（全部/组玩/帖子/用户）、关键词
+    if (ctx.query.type === "all") {
+      const all = await teamModel.find({
+        tag: ctx.query.tag,
+      });
+      ctx.body = {
+        status: 200,
+        msg: "Get all successfully!",
+        all,
+      };
+    } else if (ctx.query.type === "play") {
+      const plays = await teamModel.find({
+        sort: "约玩",
+        tag: ctx.query.tag,
+      });
+      ctx.body = {
+        status: 200,
+        msg: "Get plays successfully!",
+        plays,
+      };
+    } else if (ctx.query.type === "post") {
+      const posts = await postModel.find({
+        tag: ctx.query.tag,
+      });
+      ctx.body = {
+        status: 200,
+        msg: "Get posts successfully!",
+        posts,
+      };
+    } else if (ctx.query.type === "user") {
+      const users = await teamModel.find({
+        userName: ctx.query.tag,
+      });
+      ctx.body = {
+        status: 200,
+        msg: "Get users successfully!",
+        users,
+      };
+    }
+  });
+  // 话题模块
 
-  // 关注
-
-  // 粉丝
 app.listen(3000, () => {
   console.log("Server is running at 127.0.0.1:3000");
 });
