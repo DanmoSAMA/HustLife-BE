@@ -51,7 +51,9 @@ router
       };
       return;
     }
-
+    console.log(body);
+    console.log(user);
+    
     const isPasswordValid = require("bcrypt").compareSync(
       body.password,
       user.password

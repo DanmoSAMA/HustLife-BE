@@ -45,7 +45,7 @@ const userSchema = new Schema({
   },
   avatar: {
     type: String,
-    default: "../upload/avatar/defsault.png",
+    default: "../upload/avatar/default.png",
   },
   focus: {
     type: Number,
