@@ -24,11 +24,6 @@ const app = new Koa();
 
 const SECRET = "qfuhsnbvkjahowjrhfn";
 
-app.use(Cors());
-app.use(bodyParser());
-app.use(router.routes());
-app.use(router.allowedMethods());
-
 
 app.use(async (ctx, next) => {
   const start = Date.now();
@@ -36,6 +31,11 @@ app.use(async (ctx, next) => {
   const ms = Date.now() - start;
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
 });
+
+app.use(Cors());
+app.use(bodyParser());
+app.use(router.routes());
+app.use(router.allowedMethods());
 
 router
   //用户模块
