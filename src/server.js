@@ -29,6 +29,14 @@ app.use(bodyParser());
 app.use(router.routes());
 app.use(router.allowedMethods());
 
+
+app.use(async (ctx, next) => {
+  const start = Date.now();
+  await next();
+  const ms = Date.now() - start;
+  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
+});
+
 router
   //用户模块
   // 登录
@@ -650,9 +658,13 @@ router
       follow,
     };
   })
+  // 个人页面
+  .get("/community/profile", async (ctx, next) => {
+
+  })
 
   // 个人中心模块
-  // 个人主页(编辑资料页面也请求该API)
+  // 个人中心(编辑资料页面也请求该API)
   .get("/profile", async (ctx, next) => {
     if (!ctx.header || !ctx.header.authorization) {
       ctx.response.status = 422;
@@ -776,13 +788,13 @@ router
     const raw = String(ctx.header.authorization).split(" ").pop();
     const { id } = jwt.verify(raw, SECRET);
     const user = await userModel.updateOne(
+      { _id: id },
       {
-        _id: id,
-      },
-      {
-        password: body.password,
-        qqNum: body.qqNum,
-        phoneNum: body.phoneNum,
+        $set: {
+          password: body.password,
+          qqNum: body.qqNum,
+          phoneNum: body.phoneNum,
+        },
       }
     );
     ctx.body = {
@@ -803,13 +815,13 @@ router
     }
     const raw = String(ctx.header.authorization).split(" ").pop();
     const { id } = jwt.verify(raw, SECRET);
-    const followedId = await followModel.find({
+    const followedIds = await followModel.find({
       fanId: id,
     });
     const followeds = new Array();
-    for (let i = 0; i < followedId.length; i++) {
+    for (let i = 0; i < followedIds.length; i++) {
       let followed = await userModel.findOne({
-        _id: followeds[i].followedId,
+        _id: followedIds[i].followedId,
       });
       followeds.push(followed);
     }
@@ -899,8 +911,8 @@ router
         users,
       };
     }
-  });
-  // 话题模块
+  })
+
 
 app.listen(3000, () => {
   console.log("Server is running at 127.0.0.1:3000");

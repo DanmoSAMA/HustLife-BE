@@ -9,7 +9,7 @@
 **请求URL：**
 
 ```
-/users/login
+http://www.hust-life.xyz:3000/users/login
 ```
 
 **请求方式：**
@@ -49,7 +49,7 @@ Post
 **请求URL：**
 
 ```
-/users/register
+http://www.hust-life.xyz:3000/users/register
 ```
 
 **请求方式：**
@@ -83,7 +83,7 @@ Post
 **请求URL：**
 
 ```
-/users/register/auth
+http://www.hust-life.xyz:3000/users/register/auth
 ```
 
 **请求方式：**
@@ -118,7 +118,7 @@ Post
 **请求URL：**
 
 ```
-/users/forget
+http://www.hust-life.xyz:3000/users/forget
 ```
 
 **请求方式：**
@@ -151,7 +151,7 @@ Post
 **请求URL：**
 
 ```
-/users/forget/auth
+http://www.hust-life.xyz:3000/users/forget/auth
 ```
 
 **请求方式：**
@@ -186,7 +186,7 @@ Post
 **请求URL：**
 
 ```
-/users/forget/new
+http://www.hust-life.xyz:3000/users/forget/new
 ```
 
 **请求方式：**
@@ -216,7 +216,7 @@ Post
 **请求URL：**
 
 ```
-/team/recommend（或play/make-team/share-bill）
+http://www.hust-life.xyz:3000/team/recommend（或play/make-team/share-bill）
 ```
 
 **请求方式：**
@@ -264,7 +264,7 @@ Get
 **请求URL：**
 
 ```
-/team/my
+http://www.hust-life.xyz:3000/team/my
 ```
 
 **请求方式：**
@@ -290,7 +290,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDBjNTY2Z
 **请求URL：**
 
 ```
-/team/add
+http://www.hust-life.xyz:3000/team/add
 ```
 
 **请求方式：**
@@ -339,7 +339,7 @@ Post
 **请求URL：**
 
 ```
-/team/modify
+http://www.hust-life.xyz:3000/team/modify
 ```
 
 **请求方式：**
@@ -380,7 +380,7 @@ Post
 **请求URL：**
 
 ```
-/team/end
+http://www.hust-life.xyz:3000/team/end
 ```
 
 **请求方式：**
@@ -414,7 +414,7 @@ Post
 **请求URL：**
 
 ```
-/team/apply
+http://www.hust-life.xyz:3000/team/apply
 ```
 
 **请求方式：**
@@ -443,7 +443,7 @@ Post
 **请求URL：**
 
 ```
-/community
+http://www.hust-life.xyz:3000/community
 ```
 
 **请求方式：**
@@ -530,7 +530,7 @@ Get
 **请求URL：**
 
 ```
-/community/add
+http://www.hust-life.xyz:3000/community/add
 ```
 
 **请求方式：**
@@ -539,7 +539,7 @@ Get
 Post
 ```
 
-**请求头**
+**请求头信息：**
 
 附带token
 
@@ -576,7 +576,7 @@ Post
 **请求URL：**
 
 ```
-/community/comment
+http://www.hust-life.xyz:3000/community/comment
 ```
 
 **请求方式：**
@@ -608,7 +608,7 @@ Post
 **请求URL：**
 
 ```
-/community/comment
+http://www.hust-life.xyz:3000/community/comment
 ```
 
 **请求方式：**
@@ -716,7 +716,7 @@ Get
 **请求URL：**
 
 ```
-/community/comment/add
+http://www.hust-life.xyz:3000/community/comment/add
 ```
 
 **请求方式：**
@@ -725,7 +725,7 @@ Get
 Post
 ```
 
-**请求头**
+**请求头信息：**
 
 附带token
 
@@ -762,7 +762,7 @@ Post
 **请求URL：**
 
 ```
-/community/subcomment/add
+http://www.hust-life.xyz:3000/community/subcomment/add
 ```
 
 **请求方式：**
@@ -771,7 +771,7 @@ Post
 Post
 ```
 
-**请求头**
+**请求头信息：**
 
 附带token
 
@@ -805,7 +805,7 @@ Post
 **请求URL：**
 
 ```
-/community/comment/collect
+http://www.hust-life.xyz:3000/community/comment/collect
 ```
 
 **请求方式：**
@@ -814,7 +814,7 @@ Post
 Post
 ```
 
-**请求头**
+**请求头信息：**
 
 请附带token
 
@@ -844,7 +844,7 @@ Post
 **请求URL：**
 
 ```
-/community/comment/delete-collect
+http://www.hust-life.xyz:3000/community/comment/delete-collect
 ```
 
 **请求方式：**
@@ -853,7 +853,7 @@ Post
 Post
 ```
 
-**请求头**
+**请求头信息：**
 
 附带token
 
@@ -882,7 +882,7 @@ Post
 **请求URL：**
 
 ```
-/community/like
+http://www.hust-life.xyz:3000/community/like
 ```
 
 **请求方式：**
@@ -891,7 +891,7 @@ Post
 Post
 ```
 
-**请求头**
+**请求头信息：**
 
 附带token
 
@@ -920,7 +920,7 @@ Post
 **请求URL：**
 
 ```
-/community/delete-like
+http://www.hust-life.xyz:3000/community/delete-like
 ```
 
 **请求方式：**
@@ -929,7 +929,7 @@ Post
 Post
 ```
 
-**请求头**
+**请求头信息：**
 
 附带token
 
@@ -945,12 +945,12 @@ Post
 // 略
 ```
 
-### 11. 为评论点赞
+### 11.为评论点赞
 
 **请求URL：**
 
 ```
-/community/comment/like
+http://www.hust-life.xyz:3000/community/comment/like
 ```
 
 **请求方式：**
@@ -959,7 +959,7 @@ Post
 Post
 ```
 
-**请求头**
+**请求头信息：**
 
 附带token
 
@@ -988,7 +988,7 @@ Post
 **请求URL：**
 
 ```
-/community/like
+http://www.hust-life.xyz:3000/community/like
 ```
 
 **请求方式：**
@@ -997,7 +997,7 @@ Post
 Post
 ```
 
-**请求头**
+**请求头信息：**
 
 附带token
 
@@ -1018,7 +1018,7 @@ Post
 **请求URL：**
 
 ```
-/community/follow
+http://www.hust-life.xyz:3000/community/follow
 ```
 
 **请求方式：**
@@ -1027,7 +1027,7 @@ Post
 Post
 ```
 
-**请求头**
+**请求头信息：**
 
 附带token
 
@@ -1054,14 +1054,14 @@ Post
 
 
 
-## 个人中心（后边API的文档没写完）
+## 个人中心
 
 ### 1.获得个人主页
 
 **请求URL：**
 
 ```
-/profile
+http://www.hust-life.xyz:3000/profile
 ```
 
 **请求方式：**
@@ -1070,7 +1070,7 @@ Post
 Get
 ```
 
-**请求头信息**
+**请求头信息：**
 
 请求头中附带token，如：
 
@@ -1099,7 +1099,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDBjNTY2Z
 **请求URL：**
 
 ```
-/users/login
+http://www.hust-life.xyz:3000/profile/edit
 ```
 
 **请求方式：**
@@ -1108,29 +1108,30 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDBjNTY2Z
 Post
 ```
 
+**请求头信息：**
+
+附带token
+
 **参数说明：**
 
-|    参数     | 是否必选 |  类型  | 说明 |
-| :---------: | :------: | :----: | :--: |
-| userAccount |    是    | string | qq号 |
-|  password   |    是    | string | 密码 |
+|   参数    | 是否必选 |  类型   |       说明       |
+| :-------: | :------: | :-----: | :--------------: |
+| userName  |    是    | string  |      用户名      |
+|  gender   |    是    | Boolean | 性别(男性为true) |
+|   qqNum   |    是    | string  |       qq号       |
+| signature |    是    | string  |     个人签名     |
 
 **返回示例：**
 
 ```javascript
 {
   "status": 200,
-  "msg": "Log in successfully!"
-}
-
-{
-  "status": 422,
-  "msg": "Not find this user!",
-}
-  
-{
-  "status": 422,
-  "msg": "Password is incorrect!",
+  "msg": "Personal information has been updated!",
+  "user": {
+    "n": 1,
+    "nModified": 0,
+    "ok": 1
+  }
 }
 ```
 
@@ -1139,38 +1140,50 @@ Post
 **请求URL：**
 
 ```
-/users/login
+http://www.hust-life.xyz:3000/profile/myPost
 ```
 
 **请求方式：**
 
-```
-Post
-```
+**请求头信息：**
 
-**参数说明：**
+附带token
 
-|    参数     | 是否必选 |  类型  | 说明 |
-| :---------: | :------: | :----: | :--: |
-| userAccount |    是    | string | qq号 |
-|  password   |    是    | string | 密码 |
+```
+Get
+```
 
 **返回示例：**
 
 ```javascript
 {
   "status": 200,
-  "msg": "Log in successfully!"
-}
-
-{
-  "status": 422,
-  "msg": "Not find this user!",
-}
-  
-{
-  "status": 422,
-  "msg": "Password is incorrect!",
+  "msg": "Get my posts successfully!",
+  "posts": [
+    {
+      "like": 4,
+      "comments": 0,
+      "retweet": 0,
+      "_id": "61021049a75125dd84c69d24",
+      "content": "火影忍者不好看",
+      "tag": "Naruto",
+      "isPublic": true,
+      "tokenId": "6101637963ef17f0956a145b",
+      "__v": 0,
+      "date": null
+    },
+    {
+      "like": 0,
+      "comments": 0,
+      "retweet": 0,
+      "_id": "61021049a75125dd84c69d26",
+      "content": "火影忍者真好看",
+      "tag": "Naruto",
+      "isPublic": true,
+      "tokenId": "6101637963ef17f0956a145b",
+      "__v": 0
+    },
+  ]
 }
 ```
 
@@ -1179,38 +1192,37 @@ Post
 **请求URL：**
 
 ```
-/users/login
+http://www.hust-life.xyz:3000/profile/myCollection
 ```
 
 **请求方式：**
 
 ```
-Post
+Get
 ```
+**请求头信息：**
 
-**参数说明：**
-
-|    参数     | 是否必选 |  类型  | 说明 |
-| :---------: | :------: | :----: | :--: |
-| userAccount |    是    | string | qq号 |
-|  password   |    是    | string | 密码 |
+附带token
 
 **返回示例：**
 
 ```javascript
 {
   "status": 200,
-  "msg": "Log in successfully!"
-}
-
-{
-  "status": 422,
-  "msg": "Not find this user!",
-}
-  
-{
-  "status": 422,
-  "msg": "Password is incorrect!",
+  "msg": "Get my collections successfully!",
+  "posts": [
+    {
+      "like": 0,
+      "comments": 0,
+      "retweet": 0,
+      "_id": "61021049a75125dd84c69d26",
+      "content": "火影忍者真好看",
+      "tag": "Naruto",
+      "isPublic": true,
+      "tokenId": "6101637963ef17f0956a145b",
+      "__v": 0
+    },
+  ]
 }
 ```
 
@@ -1219,7 +1231,7 @@ Post
 **请求URL：**
 
 ```
-/users/login
+http://www.hust-life.xyz:3000/profile/settings
 ```
 
 **请求方式：**
@@ -1230,27 +1242,24 @@ Post
 
 **参数说明：**
 
-|    参数     | 是否必选 |  类型  | 说明 |
-| :---------: | :------: | :----: | :--: |
-| userAccount |    是    | string | qq号 |
-|  password   |    是    | string | 密码 |
+|   参数   | 是否必选 |  类型  |   说明   |
+| :------: | :------: | :----: | :------: |
+| password |    是    | string |   密码   |
+|  qqNum   |    是    | string |   qq号   |
+| phoneNum |    是    | string | 手机号码 |
 
 **返回示例：**
 
 ```javascript
-{
-  "status": 200,
-  "msg": "Log in successfully!"
-}
 
 {
-  "status": 422,
-  "msg": "Not find this user!",
-}
-  
-{
-  "status": 422,
-  "msg": "Password is incorrect!",
+  "status": 200,
+  "msg": "Settings have been updated successfully!",
+  "user": {
+    "n": 1,
+    "nModified": 1,
+    "ok": 1
+  }
 }
 ```
 
@@ -1259,38 +1268,41 @@ Post
 **请求URL：**
 
 ```
-/users/login
+http://www.hust-life.xyz:3000/profile/focus
 ```
 
 **请求方式：**
 
 ```
-Post
+Get
 ```
 
-**参数说明：**
+**请求头信息：**
 
-|    参数     | 是否必选 |  类型  | 说明 |
-| :---------: | :------: | :----: | :--: |
-| userAccount |    是    | string | qq号 |
-|  password   |    是    | string | 密码 |
+附带token
 
 **返回示例：**
 
 ```javascript
 {
   "status": 200,
-  "msg": "Log in successfully!"
-}
-
-{
-  "status": 422,
-  "msg": "Not find this user!",
-}
-  
-{
-  "status": 422,
-  "msg": "Password is incorrect!",
+  "msg": "Get followeds successfully!",
+  "followeds": [
+    {
+      "userName": "Danmoits",
+      "gender": true,
+      "qqNum": "123456789",
+      "phoneNum": "11111111111",
+      "signature": "蒟蒻desu",
+      "avatar": "../upload/avatar/defsault.png",
+      "focus": 0,
+      "fans": 0,
+      "_id": "6103ba66352018be39ff49cf",
+      "userAccount": "772523546",
+      "password": "$2b$10$ek9dqrOL8qOGdjS4NvFUA.rT7l3NWnD6JSsVrkzuLO.LPg2hUSxeC",
+      "__v": 0
+    }
+  ]
 }
 ```
 
@@ -1299,38 +1311,41 @@ Post
 **请求URL：**
 
 ```
-/users/login
+http://www.hust-life.xyz:3000/profile/fans
 ```
 
 **请求方式：**
 
 ```
-Post
+Get
 ```
 
-**参数说明：**
+**请求头信息：**
 
-|    参数     | 是否必选 |  类型  | 说明 |
-| :---------: | :------: | :----: | :--: |
-| userAccount |    是    | string | qq号 |
-|  password   |    是    | string | 密码 |
+附带token
 
 **返回示例：**
 
 ```javascript
 {
   "status": 200,
-  "msg": "Log in successfully!"
-}
-
-{
-  "status": 422,
-  "msg": "Not find this user!",
-}
-  
-{
-  "status": 422,
-  "msg": "Password is incorrect!",
+  "msg": "Get fans successfully!",
+  "fans": [
+    {
+      "userName": "新用户",
+      "gender": true,
+      "qqNum": "",
+      "phoneNum": "",
+      "signature": "",
+      "avatar": "../upload/avatar/defsault.png",
+      "focus": 0,
+      "fans": 0,
+      "_id": "6103bde6615d90032a21f48c",
+      "userAccount": "3214463985",
+      "password": "$2b$10$QQQoulVNaN3ydPZkB204cOarZqjebHzUs.cQwPLb8Vk4yuKSI/p5C",
+      "__v": 0
+    }
+  ]
 }
 ```
 
@@ -1343,38 +1358,28 @@ Post
 **请求URL：**
 
 ```
-/users/login
+http://www.hust-life.xyz:3000/search
 ```
 
 **请求方式：**
 
 ```
-Post
+Get
 ```
-
-**参数说明：**
-
-|    参数     | 是否必选 |  类型  | 说明 |
-| :---------: | :------: | :----: | :--: |
-| userAccount |    是    | string | qq号 |
-|  password   |    是    | string | 密码 |
 
 **返回示例：**
 
 ```javascript
 {
-  "status": 200,
-  "msg": "Log in successfully!"
-}
-
-{
-  "status": 422,
-  "msg": "Not find this user!",
-}
-  
-{
-  "status": 422,
-  "msg": "Password is incorrect!",
+    "status": 200,
+    "msg": "Get search successfully!",
+    "keyword": "王者荣耀",
+    "hots": [
+        "内卷",
+        "躺平",
+        "王者荣耀",
+        "英雄联盟"
+    ]
 }
 ```
 
@@ -1383,37 +1388,53 @@ Post
 **请求URL：**
 
 ```
-/users/login
+http://www.hust-life.xyz:3000/search/detail
 ```
 
 **请求方式：**
 
 ```
-Post
+Get
 ```
 
 **参数说明：**
 
-|    参数     | 是否必选 |  类型  | 说明 |
-| :---------: | :------: | :----: | :--: |
-| userAccount |    是    | string | qq号 |
-|  password   |    是    | string | 密码 |
+| 参数 | 是否必选 |  类型  |                        说明                        |
+| :--: | :------: | :----: | :------------------------------------------------: |
+| type |    是    | string | 对应页面不同板块的内容，可选值为all/play/post/user |
+| tag  |    是    | string |                        话题                        |
 
 **返回示例：**
 
 ```javascript
+// type=all&tag=吃
 {
   "status": 200,
-  "msg": "Log in successfully!"
-}
-
-{
-  "status": 422,
-  "msg": "Not find this user!",
-}
-  
-{
-  "status": 422,
-  "msg": "Password is incorrect!",
+  "msg": "Get all successfully!",
+  "all": [
+    {
+      "_id": "6100c67d75d5e4bd55e92118",
+      "need": "吃吃喝喝！",
+      "tag": "吃",
+      "perNum": "6/10",
+      "date": "2021-07-28",
+      "sort": "约饭",
+      "group": "772523546",
+      "tokenId": "6100c566d5af88b911100dbb",
+      "__v": 0
+    },
+    {
+      "_id": "6100c67e75d5e4bd55e9211a",
+      "need": "吃吃喝喝！",
+      "tag": "吃",
+      "perNum": "6/10",
+      "date": "2021-07-28",
+      "sort": "约饭",
+      "group": "772523546",
+      "tokenId": "6100c566d5af88b911100dbb",
+      "__v": 0
+    },
+  ]
 }
 ```
+
